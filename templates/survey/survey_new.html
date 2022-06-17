@@ -1,0 +1,45 @@
+{% extends 'survey/survey_header.html' %}
+{% load i18n %}
+
+<div class = "">
+	{% block content %}
+          <div id="hud">
+            <div id="hud-item">
+              <p id="progressText" class="hud-prefix">   
+              </p>
+              	<h3>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h3>
+            </div>
+            <div id="hud-item">
+              <p class="hud-prefix">
+                  
+              </p>
+              <h1 class="hud-main-text" id="score">
+                  
+              </h1>
+            </div>
+         </div>
+         {{wizard.form.media}}
+          <form action="" method="post">{% csrf_token %}
+		  <table>
+		  	{{ wizard.management_form }}
+			{% if wizard.form.forms %}
+			{{ wizard.form.management_form }}
+			{% for form in wizard.form.forms %}
+			{{ wizard.form.management_form }}
+			{{ form }}
+			{% for field in form %}
+			{% endfor %}
+			{% endfor %}
+			{% else %}
+			{{ wizard.form }}
+			{% endif %}
+		  	
+		  </table>
+			{% if wizard.steps.prev %}
+			<button class="btn" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">First</button>
+			{% endif %}
+			<button class="btn" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Next</button>
+			<button class="btn" type="submit" value="Submit">Submit</button>
+	</form>
+	{% endblock %}
+</div>

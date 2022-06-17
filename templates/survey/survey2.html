@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+          <style>
+      .choice-container {
+        display: flex;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        font-size: 1.8rem;
+        border: 0.1rem solid rgb(86, 165, 235, 0.25);
+        background-color: white;
+        }
+        
+        .choice-container:hover {
+        cursor: pointer;
+        box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+        transform: translateY(-0.1rem);
+        transition: transform 150ms;
+        }
+        
+        .choice-prefix {
+        padding: 1.5rem 2.5rem;
+        background-color: #56a5eb;
+        color: white;
+        }
+        
+        .choice-text {
+        padding: 1.5rem;
+        width: 100%;
+        }
+        
+        .correct {
+        background-color:NULL;
+        }
+        
+        .incorrect {
+        background-color:NULL;
+        }
+        
+        /* HUD */
+        
+        #hud {
+        display: flex;
+        justify-content: space-between;
+        }
+        
+        .hud-prefix {
+        text-align: center;
+        font-size: 2rem;
+        }
+        
+        .hud-main-text {
+        text-align: center;
+        }
+        
+        #progressBar {
+        width: 20rem;
+        height: 4rem;
+        border: 0.3rem solid #56a5eb;
+        margin-top: 1.5rem;
+        border-radius: 8px;
+        }
+        
+        #progressBarFull {
+        height: 3.4rem;
+        background-color: #56a5eb;
+        width: 0%;
+        }
+        :root {
+        background-color: #ecf5ff;
+        font-size: 62.5%;
+        }
+        
+        * {
+        box-sizing: border-box;
+        
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+          
+        margin: 0;
+        padding: 0;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4 {
+        margin-bottom: 1rem;
+        }
+        
+        h1 {
+        font-size: 5.4rem;
+        color: #56a5eb;
+        margin-bottom: 5rem;
+        }
+        
+        h1 > span {
+        font-size: 2.4rem;
+        font-weight: 500;
+        }
+
+            h2 {
+                font-size: 4.2rem;
+                /*margin-bottom: 4rem;*/ /*Bunu değiştirdim*/
+                margin-bottom: 2rem;
+                font-weight: 700;
+                color: #56a5eb
+            }
+        
+        h3 {
+        font-size: 2.8rem;
+        font-weight: 500;
+        }
+        
+        /* UTILITIES */
+        
+        .container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 2rem;
+        }
+        
+        .container > * {
+        width: 100%;
+        }
+        
+        .flex-column {
+        display: flex;
+        flex-direction: column;
+        }
+        
+        .flex-center {
+        justify-content: center;
+        align-items: center;
+        }
+        
+        .justify-center {
+        justify-content: center;
+        }
+        
+        .text-center {
+        text-align: center;
+        }
+        
+        .hidden {
+        display: none;
+        }
+        
+        /* BUTTONS */
+        .btn {
+        font-size: 1.8rem;
+        padding: 1rem 0;
+        width: 20rem;
+        text-align: center;
+        border: 0.1rem solid #56a5eb;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        color: #56a5eb;
+        background-color: white;
+        }
+        
+        .btn:hover {
+        cursor: pointer;
+        box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+        transform: translateY(-0.1rem);
+        transition: transform 150ms;
+        }
+        
+        .btn[disabled]:hover {
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+        }
+        body {
+        display: grid;
+        place-content: center;
+        
+        min-height: 100vh;
+        margin: 0;
+        padding: 40px;
+        box-sizing: border-box;
+        
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+        }
+        
+        
+        /* MAIN */
+        /* =============================================== */
+        .rad-label {
+        display: flex;
+        align-items: center;
+        
+        border-radius: 100px;
+        padding: 14px 16px;
+        margin: 10px 0;
+        
+        cursor: pointer;
+        transition: .3s;
+        }
+        
+        .rad-label:hover,
+        .rad-label:focus-within {
+        background: hsla(0, 0%, 80%, .14);
+        }
+        
+        .rad-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        z-index: -1;
+        }
+        
+        .rad-design {
+        width: 22px;
+        height: 22px;
+        border-radius: 100px;
+        
+        background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
+        position: relative;
+        }
+        
+        .rad-design::before {
+        content: '';
+        
+        display: inline-block;
+        width: inherit;
+        height: inherit;
+        border-radius: inherit;
+        
+        background: hsl(0, 0%, 90%);
+        transform: scale(1.1);
+        transition: .3s;
+        }
+        
+        .rad-input:checked+.rad-design::before {
+        transform: scale(0);
+        }
+        
+        .rad-text {
+        color: hsl(0, 0%, 60%);
+        margin-left: 14px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 900;
+        
+        transition: .3s;
+        }
+        
+        .rad-input:checked~.rad-text {
+        color: hsl(0, 0%, 40%);
+        }
+        
+        
+        /* ABS */
+        /* ====================================================== */
+        .abs-site-link {
+        position: fixed;
+        bottom: 40px;
+        left: 20px;
+        color: hsla(0, 0%, 0%, .5);
+        font-size: 16px;
+        }
+        input[type=submit] {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+        font-size: 1.8rem;
+        background-color: white;
+        border: none;
+        color: #56a5eb;
+        padding: 16px 32px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        }
+        body {
+            padding: 10% 20%;
+            font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+          
+            color: #56a5eb;
+          }
+          
+          label {
+            padding: 4px 6px;
+            line-height: 190%;
+            outline-style: none;
+            transition: all .6s;
+          }
+
+          .hiddenCB input[type="checkbox"]:checked + .hidden {
+            
+            margin: 0;
+            padding: 0;
+            display:block;
+
+            
+          }
+          
+          .hiddenCB input[type="checkbox"],
+          .hiddenCB input[type="radio"] {
+            display: none;
+            
+          }
+          
+          .hiddenCB label {
+            
+            cursor: pointer;
+          }
+          
+          .hiddenCB input[type="checkbox"]+label:hover{
+            background: rgba(0, 128, 128, .8);
+            border-radius: 8px;
+          }
+          
+          .hiddenCB input[type="checkbox"]:checked+label {
+            background: rgba(0, 128, 128, .4);
+            border-radius: 8px;
+          }
+          
+          .hiddenCB input[type="checkbox"]:checked+label:hover{
+            background: rgba(0, 128, 128, 0, .7);
+            border-radius: 8px;
+          }
+          .hiddenCB input[type="checkbox"]:checked+label+.hidden{
+              display:block;
+          }
+
+          input[type=checkbox]
+          {
+            transform: scale(3);
+          }
+
+          label {
+             border:1px solid #ccc;
+             padding:10px;
+             /*margin:0 0 10px;*/
+             display:block; 
+             font-size: 20px;
+            }
+
+            label:hover {
+             background:#eee;
+             cursor:pointer;
+            }
+
+
+            /*Aşağıdakileri ekledim*/
+            .bs-survey-item
+            {
+                padding:10px;
+            }
+
+            .bs-survey-label {
+                margin-left: 30px;
+                display: inline-block;
+            }
+
+            /*Fixed genişlik için bunu kullan. örneği aşağıda*/
+            .bs-survey-label-fixed-width {
+                width:200px;
+            }
+
+            .bs-survey-item-header
+            {
+                font-size:15px;
+            }
+
+      </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Quick Quiz - Play</title>
+  </head>
+  <body>
+      <form action="{% url 'survey2_save' %}" method="post">
+          {%csrf_token%}
+          <div class="container">
+              <div id="game" class="justify-center flex-column">
+                  <div id="hud">
+                      <div id="hud-item">
+                          <p id="progressText" class="hud-prefix">
+                              Question
+                          </p>
+                          <div id="progressBar">
+                              <div id="progressBarFull" style="width:33%"></div>
+                          </div>
+                      </div>
+                      <div id="hud-item">
+                          <p class="hud-prefix">
+                              Sakıp Sabancı Museum
+                          </p>
+                          <h1 class="hud-main-text" id="score">
+                              2022
+                          </h1>
+                      </div>
+                  </div>
+                  <h2 id="question">OBJECT QUESTION?</h2>
+                  <input type="range" name="rangeInput" min="0" max="100" onchange="updateTextInput(this.value);">
+                  <div>
+                      <div class="hiddenCB">
+                          <h3>Items</h3>
+
+                          <div class="bs-survey-item">
+                              <input type="checkbox" name="main_category_object" id="xb1" value="Bottle" onchange="handleClick(this);" />
+                              <label for="xb1">Bottle</label>
+                              <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Bottle</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb1.1" value="Spoon" onchange="handleClick(this)" />
+                                  <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.1">Spoon</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Spoon</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb1.1.1" value="Bowl" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.1.1">Bowl</label>
+                                    <input type="checkbox" name="main_category_object" id="xb1.1.2" value="Knife" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.1.2">Knife</label>
+                                </div>
+                                  <input type="checkbox" name="main_category_object" id="xb1.2" value="Wine Glass" onchange="handleClick(this)" />
+                                  <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.2">Wine Glass</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Wine Glass</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb1.2.1" value="Cup" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.2.1">Cup</label>
+                                </div>
+                              </div>
+                          </div>
+
+                          <div class="bs-survey-item">
+                              <input type="checkbox" name="main_category_object" id="xb2" value="Dining Table" onchange="handleClick(this);" /><label for="xb2">Dining Table</label>
+                              <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Dining Table</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb2.1" value="Vase" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb2.1">Vase</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Vase</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb2.1.1" value="Bench" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb2.1.1">Bench</label>
+                                    <input type="checkbox" name="main_category_object" id="xb2.1.2" value="Chair" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb2.1.2">Chair</label>
+                                </div>
+                                  <input type="checkbox" name="main_category_object" id="xb2.2" value="Bed" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb2.2">Bed</label>
+                              </div>
+                          </div>
+                          <div class="bs-survey-item">
+                              <input type="checkbox" name="main_category_object" id="xb3" value="Potted Plant" onchange="handleClick(this);" /><label for="xb3">Potted Plant</label>
+                              <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Potted Plant</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb3.1" value="Carrot" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb3.1">Carrot</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Carrot</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb1.1" value="Apple" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.1">Apple</label>
+                                </div>
+                                  <input type="checkbox" name="main_category_object" id="xb3.2" value="Orange" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb3.2">Orange</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Orange</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb1.1" value="Banana" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb1.1">Banana</label>
+                                </div>
+
+                              </div>
+                          </div>
+                          <div class="bs-survey-item">
+                            <input type="checkbox" name="main_category_object" id="xb5" value="Boat" onchange="handleClick(this);" />
+                            <label for="xb5">Boat</label>
+                            <div class="hidden">
+                                <h2 class="bs-survey-item-header">More Like Boat</h2>
+                                <input type="checkbox" name="main_category_object" id="xb5.1" value="train" onchange="handleClick(this)" />
+                                <label class="bs-survey-label bs-survey-label-fixed-width" for="xb5.1">Train</label>
+                                <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Train</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb5.1.2" value="MotorCycle" onchange="handleClick(this)" />
+                                  <label class="bs-survey-label bs-survey-label-fixed-width" for="xb5.1.2">MotorCycle</label>
+                              </div>
+                                <input type="checkbox" name="main_category_object" id="xb5.2" value="Car" onchange="handleClick(this)" />
+                                <label class="bs-survey-label bs-survey-label-fixed-width" for="xb5.2">Car</label>
+                                <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Car</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb5.2.1" value="Truck" onchange="handleClick(this)" />
+                                  <label class="bs-survey-label bs-survey-label-fixed-width" for="xb5.2.1">Truck</label>
+                              </div>
+                            </div>
+                        </div>
+                          <div class="bs-survey-item">
+                              <input type="checkbox" name="main_category_object" id="xb4" value="Person" onchange="handleClick(this);" /><label for="xb4">Person</label>
+                              <div class="hidden">
+                                  <h2 class="bs-survey-item-header">More Like Person</h2>
+                                  <input type="checkbox" name="main_category_object" id="xb4.1" value="Horse" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb4.1">Horse</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Horse</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb4.1.1" value="Sheep" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb4.1.1">Sheep</label>
+                                    <input type="checkbox" name="main_category_object" id="xb4.1.2" value="Cow" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb4.1.2">Cow</label>
+                                </div>
+                                  <input type="checkbox" name="main_category_object" id="xb4.2" value="Bird" onchange="handleClick(this);" />
+                                  <label class="bs-survey-label" for="xb4.2">Bird</label>
+                                  <div class="hidden">
+                                    <h2 class="bs-survey-item-header">More Like Bird</h2>
+                                    <input type="checkbox" name="main_category_object" id="xb4.2.1" value="Dog" onchange="handleClick(this)" />
+                                    <label class="bs-survey-label bs-survey-label-fixed-width" for="xb4.2.2">Dog</label>
+                                </div>
+                              </div>
+                              <input type="hidden" name="result_data" value='array_list' id="js_data_input">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <input class="btn" onclick="FormArray()" type="submit" value="Next" style="float:left;margin-left:120px;margin-top:20px">
+          </div>
+      </form>
+
+      <p id="par" name="object_array" value="" style="display:none;"> </p>
+
+      <script type="text/javascript">
+          var objectquestion = new Array;
+          function handleClick(checkbox) {
+              if (checkbox.checked) {
+                  objectquestion.push(checkbox.value);
+
+              }
+              else {
+                  index = objectquestion.indexOf(checkbox.value);
+                  if (index > -1) {
+                      objectquestion.splice(index, 1)
+                  }
+              }
+              document.getElementById("par").value = objectquestion
+              var x = document.getElementById("par").value;
+              document.getElementById("par").innerHTML = x;
+              return true;
+
+          }
+      </script>
+
+      <script type="text/javascript">
+          function FormArray() {
+
+              document.getElementById("js_data_input").value = document.getElementById("par").value
+
+              document.getElementById("par").innerHTML = 'Success';
+
+          }
+      </script>
+
+  </body>
+</html>

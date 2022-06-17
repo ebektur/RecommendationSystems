@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <style>
+      .choice-container {
+        display: flex;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        font-size: 1.8rem;
+        border: 0.1rem solid rgb(86, 165, 235, 0.25);
+        background-color: white;
+        }
+        
+        .choice-container:hover {
+        cursor: pointer;
+        box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+        transform: translateY(-0.1rem);
+        transition: transform 150ms;
+        }
+        
+        .choice-prefix {
+        padding: 1.5rem 2.5rem;
+        background-color: #56a5eb;
+        color: white;
+        }
+        
+        .choice-text {
+        padding: 1.5rem;
+        width: 100%;
+        }
+        
+        .correct {
+        background-color:NULL;
+        }
+        
+        .incorrect {
+        background-color:NULL;
+        }
+        
+        /* HUD */
+        
+        #hud {
+        display: flex;
+        justify-content: space-between;
+        }
+        
+        .hud-prefix {
+        text-align: center;
+        font-size: 2rem;
+        }
+        
+        .hud-main-text {
+        text-align: center;
+        }
+        
+        #progressBar {
+        width: 20rem;
+        height: 4rem;
+        border: 0.3rem solid #56a5eb;
+        margin-top: 1.5rem;
+        border-radius: 8px;
+        }
+        
+        #progressBarFull {
+        height: 3.4rem;
+        background-color: #56a5eb;
+        width: 0%;
+        }
+        :root {
+        background-color: #ecf5ff;
+        font-size: 62.5%;
+        }
+        
+        * {
+        box-sizing: border-box;
+        
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+          
+        margin: 0;
+        padding: 0;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4 {
+        margin-bottom: 1rem;
+        }
+        
+        h1 {
+        font-size: 5.4rem;
+        color: #56a5eb;
+        margin-bottom: 5rem;
+        }
+        
+        h1 > span {
+        font-size: 2.4rem;
+        font-weight: 500;
+        }
+        
+        h2 {
+        font-size: 4.2rem;
+        margin-bottom: 4rem;
+        font-weight: 700;
+        color:#56a5eb
+        }
+        
+        h3 {
+        font-size: 2.8rem;
+        font-weight: 500;
+        }
+        
+        /* UTILITIES */
+        
+        .container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 80rem;
+        margin: 0 auto;
+        padding: 2rem;
+        }
+        
+        .container > * {
+        width: 100%;
+        }
+        
+        .flex-column {
+        display: flex;
+        flex-direction: column;
+        }
+        
+        .flex-center {
+        justify-content: center;
+        align-items: center;
+        }
+        
+        .justify-center {
+        justify-content: center;
+        }
+        
+        .text-center {
+        text-align: center;
+        }
+        
+        .hidden {
+        display: none;
+        }
+        
+        /* BUTTONS */
+        .btn {
+        font-size: 1.8rem;
+        padding: 1rem 0;
+        width: 20rem;
+        text-align: center;
+        border: 0.1rem solid #56a5eb;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        color: #56a5eb;
+        background-color: white;
+        }
+        
+        .btn:hover {
+        cursor: pointer;
+        box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+        transform: translateY(-0.1rem);
+        transition: transform 150ms;
+        }
+        
+        .btn[disabled]:hover {
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+        }
+        body {
+        display: grid;
+        place-content: center;
+        
+        min-height: 100vh;
+        margin: 0;
+        padding: 40px;
+        box-sizing: border-box;
+        
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+        }
+        
+        
+        /* MAIN */
+        /* =============================================== */
+        .rad-label {
+        display: flex;
+        align-items: center;
+        
+        border-radius: 100px;
+        padding: 14px 16px;
+        margin: 10px 0;
+        
+        cursor: pointer;
+        transition: .3s;
+        }
+        
+        .rad-label:hover,
+        .rad-label:focus-within {
+        background: hsla(0, 0%, 80%, .14);
+        }
+        
+        .rad-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        z-index: -1;
+        }
+        
+        .rad-design {
+        width: 22px;
+        height: 22px;
+        border-radius: 100px;
+        
+        background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
+        position: relative;
+        }
+        
+        .rad-design::before {
+        content: '';
+        
+        display: inline-block;
+        width: inherit;
+        height: inherit;
+        border-radius: inherit;
+        
+        background: hsl(0, 0%, 90%);
+        transform: scale(1.1);
+        transition: .3s;
+        }
+        
+        .rad-input:checked+.rad-design::before {
+        transform: scale(0);
+        }
+        
+        .rad-text {
+        color: hsl(0, 0%, 60%);
+        margin-left: 14px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 18px;
+        font-weight: 900;
+        
+        transition: .3s;
+        }
+        
+        .rad-input:checked~.rad-text {
+        color: hsl(0, 0%, 40%);
+        }
+        
+        
+        /* ABS */
+        /* ====================================================== */
+        .abs-site-link {
+        position: fixed;
+        bottom: 40px;
+        left: 20px;
+        color: hsla(0, 0%, 0%, .5);
+        font-size: 16px;
+        }
+        input[type=submit] {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+        font-size: 1.8rem;
+        background-color: white;
+        border: none;
+        color: #56a5eb;
+        padding: 16px 32px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        }
+        body {
+            padding: 10% 20%;
+            font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+          
+            color: #56a5eb;
+          }
+          
+          label {
+            padding: 4px 6px;
+            line-height: 190%;
+            outline-style: none;
+            transition: all .6s;
+          }
+
+          .hiddenCB input[type="checkbox"]:checked + .hidden {
+            
+            margin: 0;
+            padding: 0;
+            display:block;
+            
+          }
+          
+          .hiddenCB input[type="checkbox"],
+          .hiddenCB input[type="radio"] {
+            display: none;
+            
+          }
+          
+          .hiddenCB label {
+            
+            cursor: pointer;
+          }
+          
+          .hiddenCB input[type="checkbox"]+label:hover{
+            background: rgba(0, 128, 128, .8);
+            border-radius: 8px;
+          }
+          
+          .hiddenCB input[type="checkbox"]:checked+label {
+            background: rgba(0, 128, 128, .4);
+            border-radius: 8px;
+          }
+          
+          .hiddenCB input[type="checkbox"]:checked+label:hover{
+            background: rgba(0, 128, 128, 0, .7);
+            border-radius: 8px;
+          }
+          .hiddenCB input[type="checkbox"]:checked+label+.hidden{
+              display:block;
+          }
+      </style>
+    </head>
+<body>
+  <form action="{% url 'survey2_save' %}" method="post">
+		{%csrf_token%}
+      <div class="container">
+        <div id="game" class="justify-center flex-column">
+          <div id="hud">
+            <div id="hud-item">
+              <p id="progressText" class="hud-prefix">
+                Question
+              </p>
+              <div id="progressBar">
+                <div id="progressBarFull"style="width:33%"></div>
+              </div>
+            </div>
+            <div id="hud-item">
+				<p class="hud-prefix">
+				  Sakıp Sabancı Museum
+				</p>
+				<h1 class="hud-main-text" id="score">
+				  2022
+				</h1>
+			  </div>
+          </div>
+          <h2 id="question">OBJECT QUESTION?</h2>
+		  <div>
+        <div style="float:left"  class="hiddenCB">
+          
+            <h3>Items</h3>
+        
+            <div>
+            <input type="checkbox" name="main_category_object" id="xb1" value="Bottle" />
+            <label for="xb1">Bottle</label>
+            <div class="hidden">
+              <h2 style="font-size:15px; margin-bottom:0px">More Like Bottle</h2>
+              <input type="checkbox" name="main_category_object" id="xb1.1" value="Bottle 1" 
+              onchange="handleClick(checkbox)"/>
+              <label style="margin-left:30px" for="xb1.1">Bottle 1</label>
+              <input type="checkbox" name="main_category_object" id="xb1.2" value="Bottle 2" onchange="handleClick(checkbox)"/>
+              <label for="xb1.2">Bottle 2</label>
+            </div>
+          </div>
+        <div>
+            <input  type="checkbox" name="main_category_object" id="xb2" value="Cup" /><label for="xb2">Cup</label>
+            <div class="hidden">
+              <h2 style="font-size:15px; margin-bottom:0px">More Like Cup</h2>
+              <input type="checkbox" name="main_category_object" id="xb2.1" value="Cup 1" onchange="handleClick(checkbox)"/>
+              <label style="margin-left:30px" for="xb2.1">Cup 1 </label>
+              <input type="checkbox" name="main_category_object" id="xb2.2" value="Cup 2" onchange="handleClick(checkbox)"/>
+              <label for="xb2.2">Cup2</label>
+            </div>
+          </div>
+        <div>
+            <input  type="checkbox" name="main_category_object" id="xb3" value="Wine Glass" /><label for="xb3">Wine Glass</label>
+            <div class="hidden">
+              <h2 style="font-size:15px; margin-bottom:0px">More Like Wine Glass</h2>
+              <input type="checkbox" name="main_category_object" id="xb3.1" value="Wine Glass 1" onchange="handleClick(checkbox)"/>
+              <label style="margin-left:30px" for="xb3.1">Wine Glass 1</label>
+              <input type="checkbox" name="main_category_object" id="xb3.2" value="Wine Glass 2" onchange="handleClick(checkbox)"/>
+              <label for="xb3.2">Wine Glass 2</label>
+            </div>
+          </div>
+        <div>
+            <input type="checkbox" name="main_category_object" id="xb4" value="Bowl" /><label for="xb4">Bowl</label>
+            <div class="hidden">
+              <h2 style="font-size:15px; margin-bottom:0px">More Like Bowl</h2>
+              <input type="checkbox" name="main_category_object" id="xb4.1" value="Bowl 1" onchange="handleClick(checkbox)"/>
+              <label style="margin-left:30px" for="xb4.1">Bowl 1</label>
+              <input type="checkbox" name="main_category_object" id="xb4.2" value="Bowl 2" onchange="handleClick(checkbox)"/>
+              <label for="xb4.2">Bowl 2</label>
+            </div>
+            </div>
+          </div>
+          </div>
+        </div>
+    </div>
+</div>
+  <input class="btn" type="submit" value="Submit" style="float:left;margin-left:120px;margin-top:20px" onclick="FormArray()">
+  <p id= "par"> </p>
+</form>
+	<script type= "text/javascript">
+		var objectquestion = [];
+		function handleClick(checkbox) {
+		    if(checkbox.checked){
+		        objectquestion.push(checkbox.value);
+		    }
+		    else{
+		    	index = objectquestion.indexOf(checkbox.value);
+		    	if(index > -1)
+		    	{
+		    		objectquestion.splice(index, 1)
+		    	}
+		    }
+		}
+		function FormArray()
+		{
+			for (var i=0; i<objectquestion.length; i++){
+				var a = objectquestion[i]
+				k= k + "array[" + i + "].value= " + a.objectquestion + " ";
+			}
+			document.getElementById("par").innerHTML = k;
+		}
+	</script>
+</body>
+</html>

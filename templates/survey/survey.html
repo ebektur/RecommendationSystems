@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <style>
+		/*------ Style 1 ------*/
+		#style1 {
+		  -webkit-appearance: none;
+		  -moz-appearance: none;
+		  appearance: none;
+		  width: 500px;
+		  height: 300px;
+		  background-color: transparent;
+		  border: none;
+		  cursor: pointer;
+		}
+		#style1::-webkit-color-swatch {
+		  border-radius: 15px;
+		  border: none;
+		}
+		#style1::-moz-color-swatch {
+		  border-radius: 15px;
+		  border: none;
+		}
+
+		.choice-container {
+			display: flex;
+			margin-bottom: 0.5rem;
+			width: 100%;
+			font-size: 1.8rem;
+			border: 0.1rem solid rgb(86, 165, 235, 0.25);
+			background-color: white;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .choice-container:hover {
+			cursor: pointer;
+			box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+			transform: translateY(-0.1rem);
+			transition: transform 150ms;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .choice-prefix {
+			padding: 1.5rem 2.5rem;
+			background-color:  #BC544B;
+			color: white;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .choice-text {
+			padding: 1.5rem;
+			width: 100%;
+		  }
+		  
+		  .correct {
+			background-color:NULL;
+		  }
+		  
+		  .incorrect {
+			background-color:NULL;
+		  }
+		  
+		  /* HUD */
+		  
+		  #hud {
+			display: flex;
+			justify-content: space-between;
+		  }
+		  
+		  .hud-prefix {
+			text-align: center;
+			font-size: 2rem;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .hud-main-text {
+			text-align: center;
+		  }
+		  
+		  #progressBar {
+			width: 20rem;
+			height: 4rem;
+			border: 0.3rem solid #BC544B ;
+			margin-top: 1.5rem;
+			border-radius: 8px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  #progressBarFull {
+			height: 3.4rem;
+			background-color:  #BC544B;
+			width: 0%;
+		  }
+		  :root {
+			background-color: #DFF0D8;
+			font-size: 62.5%;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  * {
+			box-sizing: border-box;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+		  }
+		  
+		  h1,
+		  h2,
+		  h3,
+		  h4 {
+			margin-bottom: 1rem;
+		  }
+		  
+		  h1 {
+			font-size: 5.4rem;
+			color:  #BC544B;
+			margin-bottom: 5rem;
+		  }
+		  
+		  h1 > span {
+			font-size: 2.4rem;
+			font-weight: 500;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h2 {
+			font-size: 4.2rem;
+			margin-bottom: 4rem;
+			color:   #BC544B;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h3 {
+			font-size: 2.8rem;
+			font-weight: 500;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  /* UTILITIES */
+		  
+		  .container {
+			width: 100vw;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			max-width: 80rem;
+			margin: 0 auto;
+			padding: 2rem;
+		  }
+		  
+		  .container > * {
+			width: 100%;
+		  }
+		  
+		  .flex-column {
+			display: flex;
+			flex-direction: column;
+		  }
+		  
+		  .flex-center {
+			justify-content: center;
+			align-items: center;
+		  }
+		  
+		  .justify-center {
+			justify-content: center;
+		  }
+		  
+		  .text-center {
+			text-align: center;
+		  }
+		  
+		  .hidden {
+			display: none;
+		  }
+		  
+		  /* BUTTONS */
+		  .btn {
+			font-size: 1.8rem;
+			padding: 1rem 0;
+			width: 20rem;
+			text-align: center;
+			border: 0.1rem solid #468847;
+			margin-bottom: 1rem;
+			text-decoration: none;
+			color:  #BC544B;
+			background-color: white;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .btn:hover {
+			cursor: pointer;
+			box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+			transform: translateY(-0.1rem);
+			transition: transform 150ms;
+		  }
+		  
+		  .btn[disabled]:hover {
+			cursor: not-allowed;
+			box-shadow: none;
+			transform: none;
+		  }
+		  input[type=submit] {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+			font-size: 1.8rem;
+			background-color: white;
+			border: none;
+			color:  #BC544B;
+			padding: 16px 32px;
+			text-decoration: none;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 8px;
+		  }
+		  /* FORMS */
+		  fieldset {
+			overflow: hidden
+		  }
+		  
+		  .some-class {
+			float: left;
+			clear: none;
+		  }
+		  
+		  label {
+			float: left;
+			clear: none;
+			display: block;
+			padding: 0px 1em 0px 8px;
+		  }
+		  
+		  input[type=radio],
+		  input.radio {
+			float: left;
+			clear: none;
+			margin: 2px 0 0 2px;
+		  }
+		  body, html {
+			height: 100%;
+			margin: 0;
+		}
+		.color-picker {
+			float: left;
+			display: block;
+			width: 500px;
+			height: 500px;
+			margin: 50px;
+			background-color: #000;
+		}
+		input[type="radio"], input[type="checkbox"] {
+			display: none;
+		}
+		.amethyst {
+			background-color: #9b59b6;
+		}
+		.peter {
+			background-color: #3498db;
+		}
+		.emarald {
+			background-color: #2ecc71;
+		}
+		.carrot {
+			background-color: #e67e22;
+		}
+		.alizarin {
+			background-color: #e74c3c;
+		}
+		.sun {
+			background-color: #f1c40f;
+		}
+		
+		#amethyst:checked ~ #container {
+			background-color: #9b59b6;
+		}
+		#peter:checked ~ #container {
+			background-color: #3498db;
+		}
+		#emarald:checked ~ #container {
+			background-color: #2ecc71;
+		}
+		#carrot:checked ~ #container {
+			background-color: #e67e22;
+		}
+		#alizarin:checked ~ #container {
+			background-color: #e74c3c;
+		}
+		#sun:checked ~ #container {
+			background-color: #f1c40f;
+		}
+		#amethyst:checked ~ #container::after {
+			content: "Purple";
+		}
+		#peter:checked ~ #container::after {
+			content: '#Blue';
+		}
+		#emarald:checked ~ #container::after {
+			content: 'Green';
+		}
+		#carrot:checked ~ #container::after {
+			content: 'Orange';
+		}
+		#alizarin:checked ~ #container::after {
+			content: 'Red';
+		}
+		#sun:checked ~ #container::after {
+			content: 'Yellow';
+		}
+		#container {
+			width: 100%;
+			height: 100%;
+			float: left;
+			transition: background-color .3s ease-out;
+		}
+		#container::after {
+			width: 100%;
+			margin-top: 200px;
+			font-size: 100px;
+			color: white;
+			text-align: center;
+			display: block;
+		} 
+	  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Quick Quiz - Play</title>
+  </head>
+  <body>
+    <form action="{% url 'survey_save' %}" method="post">
+		{%csrf_token%}
+      <div class="container">
+        <div id="game" class="justify-center flex-column">
+          <div id="hud">
+            <div id="hud-item">
+              <p id="progressText" class="hud-prefix">
+               
+              </p>
+              <div id="progressBar">
+                <div id="progressBarFull" ></div>
+              </div>
+            </div>
+            <div id="hud-item">
+              <p class="hud-prefix">
+                  
+              </p>
+              <h1 class="hud-main-text" id="score">
+                  
+              </h1>
+            </div>
+          </div>
+          <br><br><h2 id="question">What is Your Favorite Color?</h2>
+          <input type="range" name="rangeInput" min="0" max="100" onchange="updateTextInput(this.value);">
+      <input type="color" name="colorquestion[]" value="#000000" id = "style1"/>
+
+			<div id="container"></div>
+		  <input class="btn" type="submit" value="Next" onclick= "FormArray()">
+        </div>
+      </div>
+	</form>
+	<p id= "par"> </p>
+	<script type= "text/javascript">
+		var k = "The respective values are: ";
+		function FormArray()
+		{
+			var input = document.getElementsByName('colorquestion[]')
+			for (var i=0; i<input.length; i++){
+				var a = input[i]
+				k= k + "array[" + i + "].value= " + a.value + " ";
+			}
+			document.getElementById("par").innerHTML = k;
+		}
+	</script>
+  </body>
+</html>

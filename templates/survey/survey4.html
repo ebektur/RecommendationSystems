@@ -1,0 +1,372 @@
+{% load survey_extras %}
+<html>
+    <head>
+    		  <style>
+		.choice-container {
+			display: flex;
+			margin-bottom: 0.5rem;
+			width: 100%;
+			font-size: 1.8rem;
+			border: 0.1rem solid rgb(86, 165, 235, 0.25);
+			background-color: white;
+		  }
+		  
+		  .choice-container:hover {
+			cursor: pointer;
+			box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+			transform: translateY(-0.1rem);
+			transition: transform 150ms;
+		  }
+		  
+		  .choice-prefix {
+			padding: 1.5rem 2.5rem;
+			background-color: #56a5eb;
+			color: white;
+		  }
+		  
+		  .choice-text {
+			padding: 1.5rem;
+			width: 100%;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .correct {
+			background-color:NULL;
+		  }
+		  
+		  .incorrect {
+			background-color:NULL;
+		  }
+		  
+		  /* HUD */
+		  
+		  #hud {
+			display: flex;
+			justify-content: space-between;
+		  }
+		  
+		  .hud-prefix {
+			text-align: center;
+			font-size: 2rem;
+			
+		  }
+		  
+		  .hud-main-text {
+			text-align: center;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  #progressBar {
+			width: 20rem;
+			height: 4rem;
+			border: 0.3rem solid white;
+			margin-top: 1.5rem;
+			border-radius: 8px;
+		  }
+		  
+		  #progressBarFull {
+			height: 3.4rem;
+			background-color: white;
+			width: 0%;
+		  }
+		  :root {
+			background-color: #56a5eb;
+			font-size: 62.5%;
+		  }
+		  
+		  * {
+			box-sizing: border-box;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+			margin: 0;
+			padding: 0;
+			color: #333;
+		  }
+		  
+		  h1,
+		  h2,
+		  h3,
+		  h4 {
+			margin-bottom: 1rem;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h1 {
+			font-size: 5.4rem;
+			color: #56a5eb;
+			margin-bottom: 5rem;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h1 > span {
+			font-size: 2.4rem;
+			font-weight: 500;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h2 {
+			font-size: 4.2rem;
+			margin-bottom: 4rem;
+			font-weight: 700;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  h3 {
+			font-size: 2.8rem;
+			font-weight: 500;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  /* UTILITIES */
+		  
+		  .container {
+			width: 100vw;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			max-width: 80rem;
+			margin: 0 auto;
+			padding: 2rem;
+		  }
+		  
+		  .container > * {
+			width: 100%;
+		  }
+		  
+		  .flex-column {
+			display: flex;
+			flex-direction: column;
+		  }
+		  
+		  .flex-center {
+			justify-content: center;
+			align-items: center;
+		  }
+		  
+		  .justify-center {
+			justify-content: center;
+		  }
+		  
+		  .text-center {
+			text-align: center;
+		  }
+		  
+		  .hidden {
+			display: none;
+		  }
+		  
+		  /* BUTTONS */
+		  .btn {
+			font-size: 1.8rem;
+			padding: 1rem 0;
+			width: 20rem;
+			text-align: center;
+			border: 0.1rem solid #56a5eb;
+			margin-bottom: 1rem;
+			margin-top: 50px;
+			text-decoration: none;
+			color: #56a5eb;
+			background-color: white;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  input[type=submit] {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+			font-size: 1.8rem;
+			background-color: white;
+			border: none;
+			color: #56a5eb;
+			padding: 16px 32px;
+			text-decoration: none;
+			margin-top: 20px;
+			cursor: pointer;
+			border-radius: 8px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  .btn:hover {
+			cursor: pointer;
+			box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+			transform: translateY(-0.1rem);
+			transition: transform 150ms;
+		  }
+		  
+		  .btn[disabled]:hover {
+			cursor: not-allowed;
+			box-shadow: none;
+			transform: none;
+		  }
+		  
+		  /* FORMS */
+		  form {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		  }
+		  
+		  input {
+			margin-bottom: 1rem;
+			width: 20rem;
+			padding: 1.5rem;
+			font-size: 1.8rem;
+			border: none;
+			box-shadow: 0 0.1rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  
+		  input::placeholder {
+			color: #aaa;
+		  } 
+		  .select-box {
+			position: relative;
+			display: block;
+			width: 100%;
+			font-size: 18px;
+			color: #60666d;
+		  }
+		  
+		  .select-box__current {
+			position: relative;
+			box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+			outline: none;
+		  }
+		  .select-box__current:focus + .select-box__list {
+			opacity: 1;
+			-webkit-animation-name: none;
+					animation-name: none;
+		  }
+		  .select-box__current:focus + .select-box__list .select-box__option {
+			cursor: pointer;
+		  }
+		  .select-box__current:focus .select-box__icon {
+			-webkit-transform: translateY(-50%) rotate(180deg);
+					transform: translateY(-50%) rotate(180deg);
+		  }
+		  .select-box__icon {
+			position: absolute;
+			top: 50%;
+			right: 15px;
+			-webkit-transform: translateY(-50%);
+					transform: translateY(-50%);
+			width: 20px;
+			opacity: 0.3;
+			transition: 0.2s ease;
+		  }
+		  .select-box__value {
+			display: flex;
+		  }
+		  .select-box__input {
+			display: none;
+		  }
+		  .select-box__input:checked + .select-box__input-text {
+			display: block;
+		  }
+		  .select-box__input-text {
+			display: none;
+			width: 100%;
+			margin: 0;
+			padding: 15px;
+			background-color: #fff;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Open Sans', sans-serif;
+		  }
+		  .select-box__list {
+			position: absolute;
+			width: 100%;
+			padding: 0;
+			list-style: none;
+			opacity: 0;
+			-webkit-animation-name: HideList;
+					animation-name: HideList;
+			-webkit-animation-duration: 0.5s;
+					animation-duration: 0.5s;
+			-webkit-animation-delay: 0.5s;
+					animation-delay: 0.5s;
+			-webkit-animation-fill-mode: forwards;
+					animation-fill-mode: forwards;
+			-webkit-animation-timing-function: step-start;
+					animation-timing-function: step-start;
+			box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+		  }
+		  .select-box__option {
+			display: block;
+			padding: 15px;
+			background-color: #fff;
+		  }
+		  .select-box__option:hover, .select-box__option:focus {
+			color: #546c84;
+			background-color: #fbfbfb;
+		  }
+		  
+		  @-webkit-keyframes HideList {
+			from {
+			  -webkit-transform: scaleY(1);
+					  transform: scaleY(1);
+			}
+			to {
+			  -webkit-transform: scaleY(0);
+					  transform: scaleY(0);
+			}
+		  }
+		  
+		  @keyframes HideList {
+			from {
+			  -webkit-transform: scaleY(1);
+					  transform: scaleY(1);
+			}
+			to {
+			  -webkit-transform: scaleY(0);
+					  transform: scaleY(0);
+			}
+		  }
+
+		label {
+		    color:white;
+		    font-family: Consolas, Baskerville, 'Segoe UI', sans-serif;
+		    font-size: 20px;
+		}
+
+		input[type=checkbox]:hover {
+		    box-shadow:0px 0px 10px #1300ff;
+		}	
+		 
+	  </style>
+        <title>Artists</title>
+    </head>
+    {% autoescape off %}
+    <body>
+        <form action="{% url 'artist_question_save' %}" method="post">
+		{%csrf_token%}
+				<div class="container">
+			<div id="game" class="justify-center flex-column">
+			<div id="hud">
+				<div id="hud-item">
+				<p id="progressText" class="hud-prefix">
+					Question
+				</p>
+				<div id="progressBar">
+					<div id="progressBarFull"style="width:66%"></div>
+				</div>
+				</div>
+				<div id="hud-item">
+				<p class="hud-prefix">
+					
+				</p>
+				<h1 class="hud-main-text" id="score">
+             	   0
+             	 </h1>
+           	 </div>
+         	 </div>
+         	 <h2 id="question">ARTIST QUESTION?</h2>
+			  <div>
+			  	{%for artist in artists %}
+			  	<input type="checkbox" name="artist" value="{{ artist|convert_byte_to_string }}"><label for="checkbox">{{ artist }}</label><br>
+			  	{%endfor%}
+				<input class="btn" type="submit" value="Submit">
+			  </div>
+			</div>
+			</div>
+    </form>
+    </body>
+    {% endautoescape %}
+</html>
